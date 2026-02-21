@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { BlogService } from '@/services/blog.service';
+import { revalidatePath } from 'next/cache';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -14,6 +17,11 @@ export async function POST(request) {
   try {
     const data = await request.json();
     const newBlog = await BlogService.createBlog(data);
+    
+    // Revalidate paths to clear cache and show new post
+    revalidatePath('/');
+    revalidatePath('/dashboard');
+    
     return NextResponse.json(newBlog, { status: 201 });
   } catch (error) {
     if (error.message === 'Validation failed') {
