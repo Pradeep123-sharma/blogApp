@@ -6,6 +6,7 @@ export const revalidate = 0;
 
 export default async function Home() {
   const blogs = await BlogService.getAllBlogs();
+  console.log(`[HomePage] Rendered with ${blogs.length} blogs`);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
